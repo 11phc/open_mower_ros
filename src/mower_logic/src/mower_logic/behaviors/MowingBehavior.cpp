@@ -274,7 +274,7 @@ bool MowingBehavior::execute_mowing_plan() {
         {  // pause was requested
             this->setPause();  // set paused=true
             update_actions();
-            mowerEnabled = false;
+            //mowerEnabled = false;
             while (!requested_continue_flag) // while not asked to continue, we wait
             {
                 ROS_INFO_STREAM("MowingBehavior: PAUSED (waiting for CONTINUE)");
@@ -296,7 +296,7 @@ bool MowingBehavior::execute_mowing_plan() {
             ROS_INFO_STREAM("MowingBehavior: CONTINUING");
             this->setContinue();
             update_actions();
-            mowerEnabled = true;
+            //mowerEnabled = true;
         }
     
 

@@ -341,6 +341,14 @@ void setEmergencyMode(bool emergency)
         ROS_ERROR_STREAM("Error setting emergency. THIS SHOULD NEVER HAPPEN");
     }
 
+        if(currentBehavior) {
+        if(emergency) {
+            currentBehavior->requestPause();
+        } else {
+            currentBehavior->requestContinue();
+        }
+    }
+
 }
 
 void updateUI(const ros::TimerEvent &timer_event) {
