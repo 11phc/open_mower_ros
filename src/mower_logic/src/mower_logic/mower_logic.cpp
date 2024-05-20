@@ -340,7 +340,7 @@ void setEmergencyMode(bool emergency)
     if(!success) {
         ROS_ERROR_STREAM("Error setting emergency. THIS SHOULD NEVER HAPPEN");
     }
-
+// Piers annotates
     if(currentBehavior) {
         if(emergency) {
             currentBehavior->requestPause();
