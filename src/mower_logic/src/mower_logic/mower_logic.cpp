@@ -64,6 +64,7 @@ actionlib::SimpleActionClient<mbf_msgs::ExePathAction> *mbfClientExePath;
 ros::Publisher cmd_vel_pub, high_level_state_publisher;
 mower_logic::MowerLogicConfig last_config;
 
+int currentMowingAreaPublic;
 
 // store some values for safety checks
 ros::Time pose_time(0.0);
@@ -344,6 +345,12 @@ void setEmergencyMode(bool emergency)
 }
 
 void updateUI(const ros::TimerEvent &timer_event) {
+
+    if(currentBehavior == &MowingBehavior::INSTANCE) {
+        high_level_status.current_area = currentMowingAreaPublic;
+    } else {
+        high_level_status.current_area = -1;
+    }
 
     if(currentBehavior) {
         high_level_status.state_name = currentBehavior->state_name();
