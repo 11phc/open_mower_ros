@@ -40,6 +40,8 @@ extern void setConfig(mower_logic::MowerLogicConfig);
 
 extern void registerActions(std::string prefix, const std::vector<xbot_msgs::ActionInfo> &actions);
 
+extern int currentMowingAreaPublic;
+
 MowingBehavior MowingBehavior::INSTANCE;
 
 std::string MowingBehavior::state_name() {
@@ -68,6 +70,7 @@ Behavior *MowingBehavior::execute() {
             // skip to next area if current
             ROS_INFO_STREAM("MowingBehavior: Executing mowing plan - finished");
             currentMowingArea++;
+            currentMowingAreaPublic = currentMowingArea;
             currentMowingPaths.clear();
             currentMowingPath = 0;
             currentMowingPathIndex = 0;
@@ -103,6 +106,7 @@ void MowingBehavior::exit() {
 void MowingBehavior::reset() {
     currentMowingPaths.clear();
     currentMowingArea = 0;
+    currentMowingAreaPublic = currentMowingArea;
     currentMowingPath = 0;
     currentMowingPathIndex = 0;
     // increase cumulative mowing angle offset increment
@@ -677,6 +681,7 @@ bool MowingBehavior::restore_checkpoint() {
     } catch (rosbag::BagIOException &e) {
         // Checkpoint does not exist or is corrupt, start at the very beginning
         currentMowingArea = 0;
+        currentMowingAreaPublic = currentMowingArea;
         currentMowingPath = 0;
         currentMowingPathIndex = 0;
         currentMowingAngleIncrementSum = 0;
@@ -698,6 +703,7 @@ bool MowingBehavior::restore_checkpoint() {
                 );
                 currentMowingPath = cp->currentMowingPath;
                 currentMowingArea = cp->currentMowingArea;
+                currentMowingAreaPublic = currentMowingArea;
                 currentMowingPathIndex = cp->currentMowingPathIndex;
                 currentMowingPlanDigest = cp->currentMowingPlanDigest;
                 currentMowingAngleIncrementSum = cp->currentMowingAngleIncrementSum;
